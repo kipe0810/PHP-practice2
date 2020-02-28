@@ -11,6 +11,7 @@
 	try{
 
     $pro_code = $_POST['code'];
+    $pro_gazou_name = $_POST['gazou_name'];
 
 		$dsn = 'mysql:dbname=product;host=localhost;charset=utf8';
 		$user = 'root';
@@ -24,6 +25,10 @@
 		$stmt -> execute($data);
 
 		$dbh = null;
+
+		if ($pro_gazou_name != '') {
+			unlink('./gazou/'.$pro_gazou_name);
+		}
 	}
 	catch(Exception $e){
 		print '只今、障害により大変ご迷惑お掛けしております。';
