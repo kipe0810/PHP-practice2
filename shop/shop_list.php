@@ -52,6 +52,9 @@ else{
 			print '</a>';
 			print '<br>';
 		}
+
+		print '<br>';
+		print '<a href="shop_cartlook.php">カートを見る</a><br>';
 	}
 	catch(Exception $e){
 		print '只今、障害により大変ご迷惑お掛けしております。';
