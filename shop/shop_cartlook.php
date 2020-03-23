@@ -26,6 +26,7 @@ else{
 
 	try{
 		$cart = $_SESSION['cart'];
+		$kazu = $_SESSION['kazu'];
 		$max = count($cart);
 
 		$dsn = 'mysql:dbname=product;host=localhost;charset=utf8';
@@ -62,17 +63,20 @@ else{
 
 	カートの中身<br>
 	<br>
-	<?php for ($i=0; $i < $max; $i++) {
-	?>
+	<form method="post" action="kazu_change.php">
+		<?php for ($i=0; $i < $max; $i++) {
+		?>
 
-    <?php print $pro_name[$i]; ?>
-    <?php print $pro_gazou[$i]; ?>
-    <?php print $pro_price[$i]; ?>円
-    <br>
-  <?php } ?>
+	    <?php print $pro_name[$i]; ?>
+	    <?php print $pro_gazou[$i]; ?>
+	    <?php print $pro_price[$i]; ?>円
+	    <input type="text" name="kazu<?php print $i; ?>" value="<?php print $kazu[$i]; ?>">
+	    <br>
+	  <?php } ?>
 
-	<form>
-	<input type="button" onclick="history.back()" value="戻る">
+		<input type="hidden" name="max" value="<?php print $max; ?>">
+		<input type="submit" value="数量変更"><br>
+		<input type="button" onclick="history.back()" value="戻る">
 	</form>
 
 </body>
