@@ -43,10 +43,10 @@
 		  $max = count($cart);
 
 		  $dsn = 'mysql:dbname=product;host=localhost;charset=utf8';
-		$user = 'root';
-		$password = 'root';
-		$dbh = new PDO($dsn,$user,$password);
-		$dbh -> setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+			$user = 'root';
+			$password = 'root';
+			$dbh = new PDO($dsn,$user,$password);
+			$dbh -> setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
 		for ($i=0; $i < $max; $i++) {
 			$sql = 'SELECT name,price FROM mst_product WHERE code=?';
@@ -83,6 +83,9 @@
 		$honban .= "電話　090-1111-1111\n";
 		$honban .= "メール　info@xxxxxxxx.xxxxxxxxx\n";
 		$honban .= "□□□□□□□□□□□□□□□□□□□□\n";
+
+		print '<br>';
+		print $honbun;
 	  }
 	  catch(Exception $e){
 	  	print '只今、障害により大変ご迷惑をお掛けしております。';
