@@ -58,6 +58,7 @@
 
 	      $name = $rec['name'];
 	      $price = $rec['price'];
+	      $kakaku[] = $price;
 	      $suryo = $kazu[$i];
 	      $shokei = $price*$suryo;
 
@@ -68,7 +69,7 @@
 			}
 
 			$sql = 'INSERT INTO dat_sales(code_member,name,email,postal1,postal2,address,tel) VALUES (?,?,?,?,?,?,?)';
-			$stmt = $dbh->prepare($spl);
+			$stmt = $dbh->prepare($sql);
 			$data = array();
 			$data[] = 0;
 			$data[] = $onamae;
@@ -78,6 +79,23 @@
 			$data[] = $address;
 			$data[] = $tel;
 			$stmt->execute($data);
+
+			$sql = 'SELECT LAST_INSERT_ID()';
+			$stmt = $dbh->prepare($sql);
+			$stmt->execute();
+			$rec = $stmt->fetch(PDO::FETCH_ASSOC);
+			$lastcode = $rec['LAST_INSERT_ID()'];
+
+			for ($i=0; $i < $max; $i++) {
+				$sql = 'INSERT INTO dat_sales_product(code_sales,code_product,price,quantity) VALUES (?,?,?,?)';
+				$stmt = $dbh->prepare($sql);
+				$data = array();
+				$data[] = $lastcode;
+				$data[] = $cart[$i];
+				$data[] = $kakaku[$i];
+				$data[] = $kazu[$i];
+				$stmt->execute($data);
+			}
 
 
 			$dbh = null;
