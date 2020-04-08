@@ -27,7 +27,7 @@ else{
     $pro_code = $_POST['code'];
     $pro_gazou_name = $_POST['gazou_name'];
 
-		$dsn = 'mysql:dbname=product;host=localhost;charset=utf8';
+		$dsn = 'mysql:dbname=shop;host=localhost;charset=utf8';
 		$user = 'root';
 		$password = 'root';
 		$dbh = new PDO($dsn,$user,$password);
