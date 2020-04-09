@@ -68,6 +68,11 @@
 	      $honbun .= $shokei."円 \n";
 			}
 
+      // $sql = 'LOCK TABLES dat_sales WRITE,dat-sales_product WRITE';
+      // $stmt = $dbh->prepare($sql);
+      // $stmt->execute();
+      $dbh->beginTransaction();
+
 			$sql = 'INSERT INTO dat_sales(code_member,name,email,postal1,postal2,address,tel) VALUES (?,?,?,?,?,?,?)';
 			$stmt = $dbh->prepare($sql);
 			$data = array();
@@ -97,6 +102,10 @@
 				$stmt->execute($data);
 			}
 
+      // $sql = 'UNLOCK TABLES';
+      // $stmt = $dbh->prepare($sql);
+      // $stmt->execute();
+      $dbh->commit();
 
 			$dbh = null;
 
@@ -139,6 +148,9 @@
 	  }
 
 	?>
+
+  <br>
+  <a href="shop_list.php">商品画面へ</a>
 
 </body>
 </html>
