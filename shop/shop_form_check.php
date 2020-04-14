@@ -101,7 +101,7 @@
 		else{
 			print '女性';
 		}
-		print '<br><br>'
+		print '<br><br>';
 
 		print '生まれ年<br>';
 		print $birth;
