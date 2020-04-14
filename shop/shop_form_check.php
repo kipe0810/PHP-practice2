@@ -20,7 +20,7 @@
 	$tel = $post['tel'];
 	$chumon = $post['chumon'];
 	$pass = $post['pass'];
-	$pass2 = $pass['pass2'];
+	$pass2 = $post['pass2'];
 	$danjo = $post['danjo'];
 	$birth = $post['birth'];
 
