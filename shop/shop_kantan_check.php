@@ -1,3 +1,13 @@
+<?php
+  session_start();
+  session_regenerate_id(true);
+  if (isset($_SESSION['member_login']) == false) {
+  	print 'ログインされていません。<br>';
+  	print '<a href="shop_list.php">商品一覧へ</a>';
+  	exit();
+  }
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,129 +18,61 @@
 
 	<?php
 
-	require_once('../common/common.php');
+    $code = $_SESSION['member_code'];
 
-	$post = sanitize($_POST);
+    $dsn = 'mysql:dbname=shop;host=localhost;charset=utf8';
+		$user = 'root';
+		$password = 'root';
+		$dbh = new PDO($dsn,$user,$password);
+		$dbh -> setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
-	$onamae = $post['onamae'];
-	$email = $post['email'];
-	$postal1 = $post['postal1'];
-	$postal2 = $post['postal2'];
-	$address = $post['address'];
-	$tel = $post['tel'];
-	$chumon = $post['chumon'];
-	$pass = $post['pass'];
-	$pass2 = $post['pass2'];
-	$danjo = $post['danjo'];
-	$birth = $post['birth'];
+		$sql = 'SELECT name,email,postal1,postal2,address,tel FROM dat_member WHERE code=?';
+		$stmt = $dbh -> prepare($sql);
+		$data[] = $code;
+		$stmt -> execute($data);
+		$rec = $stmt -> fetch(PDO::FETCH_ASSOC);
 
-	$okflg = true;
+		$dbh = null;
 
-	if ($onamae == '') {
-		print 'お名前が入力されていません。<br><br>';
-		$okflg = false;
-	}
-	else{
-		print 'お名前：';
+		$onamae = $rec['name'];
+		$email = $rec['email'];
+		$postal1 = $rec['postal1'];
+		$postal2 = $rec['postal2'];
+		$address = $rec['address'];
+		$tel = $rec['tel'];
+
+		print 'お名前<br>';
 		print $onamae;
 		print '<br><br>';
-	}
 
-	if (preg_match('/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/', $email)==0) {
-		print 'メールアドレスを正確に入力してください。<br><br>';
-		$okflg = false;
-	}
-	else{
-		print 'メールアドレス：';
+		print 'メールアドレス<br>';
 		print $email;
 		print '<br><br>';
-	}
 
-	if (preg_match('/^[0-9]+$/', $postal1)==0) {
-		print '郵便番号は半角数字で入力してください。<br><br>';
-		$okflg = false;
-	}
-
-	if (preg_match('/\A[0-9]+\z/', $postal2)==0) {
-		print '郵便番号は半角数字で入力してください。<br><br>';
-		$okflg = false;
-	}
-	else{
-		print '郵便番号：';
+		print '郵便番号<br>';
 		print $postal1;
 		print '-';
 		print $postal2;
 		print '<br><br>';
-	}
 
-	if ($address=='') {
-		print '住所が入力されていません。<br><br>';
-		$okflg = false;
-	}
-	else{
-		print '住所：';
+		print '住所<br>';
 		print $address;
 		print '<br><br>';
-	}
 
-	if (preg_match('/\A\d{2,5}-?\d{2,5}-?\d{4,5}\z/', $tel)==0) {
-		print '電話番号を正確に入力してください。<br><br>';
-		$okflg = false;
-	}
-	else{
-		print '電話番号：';
+		print '電話番号<br>';
 		print $tel;
 		print '<br><br>';
-	}
 
-	if ($chumon == 'chumontouroku') {
-		if ($pass == '') {
-			print 'パスワードが入力されていません。<br><br>';
-			$okflg = false;
-		}
-
-		if ($pass != $pass2) {
-			print 'パスワードが一致しません。<br><br>';
-			$okflg = false;
-		}
-
-		print '性別<br>';
-		if ($danjo == 'dan') {
-			print '男性';
-		}
-		else{
-			print '女性';
-		}
-		print '<br><br>';
-
-		print '生まれ年<br>';
-		print $birth;
-		print '年代';
-		print '<br><br>';
-	}
-
-	if ($okflg == true) {
-		print '<form method="post" action="shop_form_done.php">';
+		print '<form method="post" action="shop_kantan_done.php">';
 		print '<input type="hidden" name="onamae" value="'.$onamae.'">';
 	  print '<input type="hidden" name="email" value="'.$email.'">';
 	  print '<input type="hidden" name="postal1" value="'.$postal1.'">';
 	  print '<input type="hidden" name="postal2" value="'.$postal2.'">';
 	  print '<input type="hidden" name="address" value="'.$address.'">';
 	  print '<input type="hidden" name="tel" value="'.$tel.'">';
-	  print '<input type="hidden" name="chumon" value="'.$chumon.'">';
-	  print '<input type="hidden" name="pass" value="'.$pass.'">';
-	  print '<input type="hidden" name="danjo" value="'.$danjo.'">';
-	  print '<input type="hidden" name="birth" value="'.$birth.'">';
 	  print '<input type="button" onclick="history.back()" value="戻る">';
 	  print '<input type="submit" value="OK"><br>';
 	  print '</form>';
-	}
-	else{
-		print '<form>';
-		print '<input type="button" onclick="history.back()" value="戻る">';
-		print '</form>';
-	}
-
 	?>
 
 </body>
